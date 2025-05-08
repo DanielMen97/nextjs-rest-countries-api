@@ -1,0 +1,29 @@
+@import './theme.scss';
+
+.header{
+  width: 100%;
+  height: 60px;
+  padding: 0 50px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-elements);
+
+  .title{
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--color-text);
+  }
+
+  .toogleDarkMode{
+    border: none;
+    background-color: transparent;
+    gap: 10px;
+    cursor: pointer;
+  }
+}
+
+.main{
+  padding: 0 50px;
+  .form{
+    padding: 20px 0;
+  }
+}
