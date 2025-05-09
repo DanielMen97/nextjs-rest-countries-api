@@ -3,7 +3,14 @@ import styles from "./page.module.scss";
 import loupe from "../../public/loupe.svg";
 import moon from "../../public/moon.svg";
 
-export default function Home() {
+export default async function Home() {
+  const res = await fetch("https://restcountries.com/v3.1/all");
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");    
+  }
+
+  const countries = await res.json();
+
   return (
     <>
       <header className={`${styles.header} center-between`}>
@@ -15,7 +22,7 @@ export default function Home() {
       </header>
       <main className={styles.main}>
         <form className={`${styles.form} center-between`}>
-          <label htmlFor="search" className={styles.label}>
+          <label htmlFor="search" className={`${styles.label} center`}>
             <Image
               src={loupe}
               alt="search icon"
@@ -30,23 +37,29 @@ export default function Home() {
           />
           </label>
           <select className={styles.select}>
-            <option value="africa">Africa</option>
+            <option value="africa">Filter by Region</option>
           </select>
         </form>
         <section className={styles.countries}>
-          <article className={styles.country}>
-            <Image
-              src="https://flagcdn.com/af.svg"
-              alt="country flag"
-              width={300}
-              height={200}
-            />
-            <h2 className={styles.countryName}>Afghanistan</h2>
-            <p className={styles.countryInfo}>Population: 38,928,346</p>
-            <p className={styles.countryInfo}>Region: Asia</p>
-            <p className={styles.countryInfo}>Capital: Kabul</p>
-          </article>
-          {/* Add more country cards here */}
+
+          {/* Map through the countries data and display each country */}
+          {countries.map((country: any) => (
+            <article key={country.name.common} className={styles.country}>
+              <Image
+                src={country.flags.svg}
+                alt="country flag"
+                className={styles.flag}
+                width={300}
+                height={200}
+              />
+              <h2 className={styles.name}>{country.name.common}</h2>
+              <p className={styles.info}>
+                Population: {country.population.toLocaleString()}
+              </p>
+              <p className={styles.info}>Region: {country.region}</p>
+              <p className={styles.info}>Capital: {country.capital}</p>
+            </article>
+          ))}
         </section>
       </main>
     </>
